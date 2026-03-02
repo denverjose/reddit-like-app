@@ -1,36 +1,214 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Community Protocol & Discussion Platform – Next.js Frontend
 
-## Getting Started
+Frontend application for the Community-Powered Protocol & Discussion Platform.
 
-First, run the development server:
+This application allows users to:
 
-```bash
+- Browse protocols
+- Search and filter protocols
+- View protocol detail pages
+- Create discussion threads
+- Post nested comments
+- Submit reviews and ratings
+- Upvote / Downvote threads and comments
+- Interact with a responsive UI built with TailwindCSS
+
+------------------------------------------------------------
+
+TECH STACK
+
+- Next.js 16+
+- React 19+
+- TailwindCSS
+- Fetch API for backend communication
+- Server-side and client-side rendering where appropriate
+
+------------------------------------------------------------
+
+ARCHITECTURE OVERVIEW
+
+Search flow:
+
+Frontend → Laravel API → Typesense → Laravel → JSON → Frontend
+
+Important:
+Typesense is NOT called directly from the frontend.
+All search logic is handled securely through the Laravel backend.
+
+------------------------------------------------------------
+
+INSTALLATION & SETUP
+
+1) Clone Repository
+
+git clone <your-repo-url>
+cd frontend
+
+2) Install Dependencies
+
+npm install
+
+3) Environment Configuration
+
+Create a file:
+
+.env.local
+
+Add:
+
+NEXT_PUBLIC_API_URL=http://127.0.0.1:8000/api
+
+Make sure your Laravel backend is running before starting the frontend.
+
+------------------------------------------------------------
+
+RUN DEVELOPMENT SERVER
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Application runs at:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+------------------------------------------------------------
 
-## Learn More
+PROJECT STRUCTURE (Simplified)
 
-To learn more about Next.js, take a look at the following resources:
+app/
+  page.js (Homepage - Protocol listing)
+  protocols/[id]/page.js (Protocol detail page)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+components/
+  ProtocolCard.jsx
+  ThreadList.jsx
+  CommentSection.jsx
+  VoteButtons.jsx
+  SearchBar.jsx
+  Filters.jsx
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+lib/
+  api.js (API helper functions)
 
-## Deploy on Vercel
+------------------------------------------------------------
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+FEATURES IMPLEMENTED
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1) Protocol Listing Page
+- Displays protocols
+- Pagination support
+- Search-as-you-type
+- Sorting options:
+  - Most Recent
+  - Most Reviewed
+  - Top Rated
+
+2) Protocol Detail Page
+- Displays protocol information
+- Displays associated threads
+- Displays reviews and average rating
+- Create new thread under protocol
+- Submit review with rating
+
+3) Threads
+- View thread content
+- Upvote / Downvote
+- View nested comments
+
+4) Comments
+- Add top-level comment
+- Reply to existing comment
+- Nested display structure
+- Upvote / Downvote comments
+
+5) Voting System
+- One vote per entity enforced by backend
+- UI updates after vote submission
+
+6) Responsive Design
+- Mobile-friendly layout
+- Clean Tailwind-based styling
+- Simple and intuitive UX
+
+------------------------------------------------------------
+
+API CONNECTION EXAMPLE
+
+Search request example:
+
+GET /api/protocols/search?q=detox&sort=recent&page=1&per_page=10
+
+Frontend fetch example:
+
+fetch(`${API_URL}/protocols/search?q=${query}&sort=${sort}&page=${page}&per_page=${perPage}`)
+
+------------------------------------------------------------
+
+TESTING GUIDE
+
+1) Start Laravel backend
+
+cd backend
+php artisan serve
+
+2) Reset and seed backend if needed
+
+php artisan migrate:fresh --seed
+php artisan typesense:reindex
+
+3) Start frontend
+
+cd frontend
+npm run dev
+
+4) Test the following:
+
+- Search protocols
+- Sort results
+- Open protocol detail page
+- Create a new thread
+- Post comments
+- Reply to comments
+- Submit review
+- Upvote/downvote thread
+- Upvote/downvote comment
+- Verify UI responsiveness on mobile view
+
+------------------------------------------------------------
+
+ENVIRONMENT VARIABLES SUMMARY
+
+NEXT_PUBLIC_API_URL=http://127.0.0.1:8000/api
+
+------------------------------------------------------------
+
+PRODUCTION BUILD
+
+To create production build:
+
+npm run build
+npm start
+
+------------------------------------------------------------
+
+DEPLOYMENT OPTIONS
+
+Frontend can be deployed to:
+
+- Vercel
+- Netlify
+- Any Node.js hosting provider
+
+Make sure NEXT_PUBLIC_API_URL points to your production backend API.
+
+------------------------------------------------------------
+
+SUBMISSION CHECKLIST
+
+[x] Responsive UI
+[x] Search & filtering
+[x] Voting UX
+[x] Nested comments
+[x] Thread creation
+[x] Review submission
+[x] Connected to Laravel backend
+[x] Clean component structure
