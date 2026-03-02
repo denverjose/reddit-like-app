@@ -1,0 +1,78 @@
+{
+    "name": "protocols",
+    "fields": [
+        {
+            "name": "title",
+            "type": "string",
+            "facet": false,
+            "index": true,
+            "sort": false,
+            "optional": false,
+            "store": true
+        },
+        {
+            "name": "tags",
+            "type": "string[]",
+            "facet": true,
+            "index": true,
+            "sort": false,
+            "optional": false,
+            "store": true
+        },
+        {
+            "name": "average_rating",
+            "type": "float",
+            "facet": true,
+            "index": true,
+            "sort": true,
+            "optional": false,
+            "store": true
+        },
+        {
+            "name": "review_count",
+            "type": "int32",
+            "facet": true,
+            "index": true,
+            "sort": true,
+            "optional": false,
+            "store": true
+        },
+        {
+            "name": "created_at",
+            "type": "int64",
+            "facet": true,
+            "index": true,
+            "sort": true,
+            "optional": false,
+            "store": true
+        },
+        {
+            "name": "updated_at",
+            "type": "int64",
+            "facet": false,
+            "index": false,
+            "sort": false,
+            "optional": false,
+            "store": true
+        },
+        {
+            "name": "author",
+            "type": "string",
+            "facet": false,
+            "index": false,
+            "sort": false,
+            "optional": false,
+            "store": true
+        },
+        {
+            "name": "content",
+            "type": "string",
+            "facet": false,
+            "index": false,
+            "sort": false,
+            "optional": false,
+            "store": true
+        }
+    ],
+    "default_sorting_field": "created_at"
+}

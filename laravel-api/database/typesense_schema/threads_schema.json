@@ -1,0 +1,82 @@
+{
+    "name": "threads",
+    "fields": [
+        {
+            "name": "title",
+            "type": "string",
+            "facet": false,
+            "index": true,
+            "sort": false,
+            "optional": false,
+            "store": true
+        },
+        {
+            "name": "body",
+            "type": "string",
+            "facet": false,
+            "index": true,
+            "sort": false,
+            "optional": false,
+            "store": true
+        },
+        {
+            "name": "tags",
+            "type": "string[]",
+            "facet": true,
+            "index": true,
+            "sort": false,
+            "optional": true,
+            "store": true
+        },
+        {
+            "name": "author",
+            "type": "string",
+            "facet": false,
+            "index": false,
+            "sort": false,
+            "optional": false,
+            "store": true
+        },
+        {
+            "name": "protocol_title",
+            "type": "string",
+            "facet": false,
+            "index": false,
+            "sort": false,
+            "optional": true,
+            "store": true
+        },
+        {
+            "name": "total_votes",
+            "type": "int32",
+            "facet": false,
+            "index": true,
+            "sort": true,
+            "optional": false,
+            "store": true
+        },
+        {
+            "name": "comment_count",
+            "type": "int32",
+            "facet": false,
+            "index": false,
+            "sort": false,
+            "optional": false,
+            "store": true
+        },
+        {
+            "name": "created_at",
+            "type": "int64",
+            "facet": false,
+            "index": true,
+            "sort": true,
+            "optional": false,
+            "store": true
+        }
+    ],
+    "default_sorting_field": "created_at",
+    "created_at": 0,
+    "enable_nested_fields": false,
+    "symbols_to_index": [],
+    "token_separators": []
+}
