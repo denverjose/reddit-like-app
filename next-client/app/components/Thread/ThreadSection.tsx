@@ -85,9 +85,9 @@ export default function ThreadSection({ protocolId, initialThreads }: Props) {
         isProtocolPage={false}
       />
 
-      {threads.map((t) => (
+      {threads.map((t,i) => (
         <ItemCard
-          key={t.id}
+          key={i}
           initialItemData={t}
           onDelete={handleDelete}
           isProtocolPage={false}

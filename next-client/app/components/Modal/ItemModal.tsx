@@ -53,7 +53,7 @@ export default function ItemModal({
           const data = await res.json();
           setTitle(data.title ?? "");
           setAuthor(data.author ?? "");
-          setContent(isProtocolPage ? data.content ?? "" : data.body ?? "");
+          setContent(isProtocolPage ? (data.content ?? "") : (data.body ?? ""));
           setTags(Array.isArray(data.tags) ? data.tags : []);
         } catch (err) {
           console.error(err);
@@ -101,7 +101,7 @@ export default function ItemModal({
           body: JSON.stringify(
             isProtocolPage
               ? { title, author, content, tags }
-              : { title, author, body: content }
+              : { title, author, body: content },
           ),
         });
       }
@@ -151,10 +151,10 @@ export default function ItemModal({
             {mode === "create"
               ? `Create ${singular}`
               : mode === "edit"
-              ? `Edit ${singular}`
-              : mode === "review"
-              ? "Add Review"
-              : "Edit Review"}
+                ? `Edit ${singular}`
+                : mode === "review"
+                  ? "Add Review"
+                  : "Edit Review"}
           </h3>
         </div>
 
@@ -253,12 +253,12 @@ export default function ItemModal({
             {loading
               ? "Processing..."
               : mode === "review"
-              ? "Submit"
-              : mode === "editReview"
-              ? "Update Review"
-              : mode === "create"
-              ? `Create ${singular}`
-              : `Update ${singular}`}
+                ? "Submit"
+                : mode === "editReview"
+                  ? "Update Review"
+                  : mode === "create"
+                    ? `Create ${singular}`
+                    : `Update ${singular}`}
           </button>
         </div>
       </div>
