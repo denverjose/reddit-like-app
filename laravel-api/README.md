@@ -1,59 +1,324 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Community Protocol & Discussion Platform – Laravel API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Backend API for a community-driven platform where users can post structured protocols, create discussion threads, leave reviews, comment (nested), vote, and search content using Typesense.
 
-## About Laravel
+------------------------------------------------------------
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+TECH STACK
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Laravel 12+
+- MySQL
+- Typesense Cloud
+- RESTful API Architecture
+- Polymorphic Voting System
+- Nested Comments (Self-Referencing)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+------------------------------------------------------------
 
-## Learning Laravel
+FEATURES IMPLEMENTED
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- CRUD for Protocols
+- CRUD for Threads
+- Nested Comments (threaded replies)
+- Reviews & Ratings system
+- Upvote / Downvote system (one vote per user per entity)
+- Typesense-powered search & sorting
+- Seeder with realistic mock data
+- Automatic indexing on create/update/delete
+- Optional reindex command
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+------------------------------------------------------------
 
-## Laravel Sponsors
+INSTALLATION & SETUP
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1) Clone Repository
 
-### Premium Partners
+git clone <your-repo-url>
+cd backend
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+2) Install Dependencies
 
-## Contributing
+composer install
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3) Environment Setup
 
-## Code of Conduct
+cp .env.example .env
+php artisan key:generate
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4) Database Configuration
 
-## Security Vulnerabilities
+Update .env:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=protocols_db
+DB_USERNAME=root
+DB_PASSWORD=your_password
 
-## License
+Create database manually in MySQL:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+CREATE DATABASE protocols_db;
+
+------------------------------------------------------------
+
+TYPESENSE CONFIGURATION
+
+Add to .env:
+
+TYPESENSE_HOST=f8g1svtrc4xbjdnwp-1.a1.typesense.net
+TYPESENSE_PORT=443
+TYPESENSE_PROTOCOL=https
+TYPESENSE_API_KEY=your_admin_api_key
+
+Only the Admin API key is required in backend.
+Do NOT expose this key in frontend.
+
+------------------------------------------------------------
+
+DATABASE SETUP
+
+Run migrations:
+
+php artisan migrate
+
+Seed database with mock data:
+
+php artisan db:seed
+
+OR reset everything:
+
+php artisan migrate:fresh --seed
+
+Seeder generates:
+- 12 Protocols
+- 10 Threads
+- Nested Comments
+- Reviews with ratings
+- Votes
+
+------------------------------------------------------------
+
+TYPESENSE INDEXING
+
+Protocols and Threads are indexed automatically on:
+- Create
+- Update
+- Delete
+
+If a reindex command exists:
+
+php artisan typesense:reindex
+
+If using API route:
+
+POST /api/reindex
+
+------------------------------------------------------------
+
+RUNNING THE SERVER
+
+php artisan serve
+
+Base URL:
+http://127.0.0.1:8000
+
+API Base:
+http://127.0.0.1:8000/api
+
+------------------------------------------------------------
+
+API OVERVIEW
+
+PROTOCOLS
+
+GET /api/protocols/search
+
+Query Parameters:
+- q (search term)
+- sort (recent | most_reviewed | top_rated)
+- page
+- per_page
+
+Example:
+GET /api/protocols/search?q=detox&sort=top_rated
+
+GET /api/protocols/{id}
+
+Returns:
+- Protocol details
+- Associated threads
+- Reviews
+- Rating summary
+
+POST /api/protocols
+
+{
+  "title": "Cold Therapy Protocol",
+  "content": "Step-by-step guide...",
+  "tags": ["immune", "recovery"],
+  "author": "Jane Doe"
+}
+
+PUT /api/protocols/{id}
+
+DELETE /api/protocols/{id}
+
+------------------------------------------------------------
+
+THREADS
+
+POST /api/threads
+
+{
+  "protocol_id": 1,
+  "title": "My Experience",
+  "body": "This protocol helped me..."
+}
+
+GET /api/threads
+
+Supports search and sorting.
+
+------------------------------------------------------------
+
+COMMENTS (Nested)
+
+POST /api/comments
+
+Top-level comment:
+
+{
+  "thread_id": 1,
+  "parent_id": null,
+  "body": "Very insightful!"
+}
+
+Reply:
+
+{
+  "thread_id": 1,
+  "parent_id": 4,
+  "body": "I agree with this."
+}
+
+------------------------------------------------------------
+
+REVIEWS
+
+POST /api/reviews
+
+{
+  "protocol_id": 1,
+  "rating": 5,
+  "feedback": "Highly recommended."
+}
+
+------------------------------------------------------------
+
+VOTES (Polymorphic)
+
+Users can vote once per thread or comment.
+
+POST /api/votes
+
+Thread vote:
+
+{
+  "votable_type": "thread",
+  "votable_id": 3,
+  "type": "upvote"
+}
+
+Comment vote:
+
+{
+  "votable_type": "comment",
+  "votable_id": 8,
+  "type": "downvote"
+}
+
+------------------------------------------------------------
+
+ARCHITECTURE NOTES
+
+Voting System:
+- Implemented using polymorphic relationships
+- voteable_id
+- voteable_type
+- Ensures one vote per user per entity
+
+Nested Comments:
+- Self-referencing parent_id
+- Recursive relationship for replies
+
+Search Architecture:
+Frontend → Laravel API → Typesense → Laravel → JSON Response
+
+Advantages:
+- Admin key never exposed
+- Centralized search logic
+- Clean separation of concerns
+
+------------------------------------------------------------
+
+TESTING GUIDE
+
+To fully reset and test:
+
+php artisan migrate:fresh --seed
+php artisan typesense:reindex
+php artisan serve
+
+Then test:
+- Protocol search
+- Sorting
+- Creating threads
+- Nested comments
+- Voting logic (ensure one vote per entity)
+- Reviews & rating calculation
+- Index updates after CRUD
+
+------------------------------------------------------------
+
+PROJECT STRUCTURE (Simplified)
+
+app/
+  Models/
+  Http/Controllers/
+  Services/TypesenseSyncService.php
+
+database/
+  migrations/
+  factories/
+  seeders/
+
+routes/
+  api.php
+
+------------------------------------------------------------
+
+ENVIRONMENT VARIABLES SUMMARY
+
+APP_NAME=
+APP_URL=
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
+TYPESENSE_HOST=
+TYPESENSE_PORT=443
+TYPESENSE_PROTOCOL=https
+TYPESENSE_API_KEY=
+
+------------------------------------------------------------
+
+SUBMISSION CHECKLIST
+
+[x] RESTful API
+[x] Seeded realistic data
+[x] Typesense indexing
+[x] Search & filtering
+[x] Voting system
+[x] Nested comments
+[x] README documentation
+[x] .env.example included
